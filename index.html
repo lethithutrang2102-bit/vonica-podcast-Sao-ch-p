@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VONICA Podcast Lab</title>
+  <style>
+    :root {
+      --purple: #5546a5;
+      --dark: #28243e;
+      --muted: #6c6880;
+      --border: #e4e0ee;
+      --bg: #f7f6fb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--dark);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    button { font: inherit; cursor: pointer; }
+
+    .topbar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 18px 7%;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .logo {
+      background: var(--purple);
+      color: white;
+      width: 43px;
+      height: 43px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 23px;
+    }
+
+    .brand { font-size: 23px; font-weight: 800; letter-spacing: 1px; }
+    .tagline { color: var(--muted); font-size: 11px; letter-spacing: 1px; }
+
+    main { max-width: 1050px; margin: 45px auto; padding: 0 22px; }
+
+    .hero {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: clamp(24px, 5vw, 55px);
+      box-shadow: 0 12px 35px #30245b0a;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      color: var(--purple);
+      background: #f0edff;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    h1 { font-size: clamp(30px, 5vw, 47px); line-height: 1.18; margin: 22px 0 16px; }
+    .intro { max-width: 700px; color: var(--muted); font-size: 17px; }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px 18px;
+      background: white;
+      color: var(--dark);
+      font-weight: bold;
+      text-align: left;
+    }
+
+    .btn.primary { background: var(--purple); color: white; border-color: var(--purple); }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 5px 15px #30245b12; }
+
+    .reset { margin-top: 12px; color: var(--muted); background: transparent; border: 0; padding: 10px 0; }
+
+    .panel {
+      display: none;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      margin-top: 20px;
+    }
+
+    .panel.active { display: block; }
+    .panel h2 { margin-top: 0; }
+
+    .field { display: block; margin: 16px 0; font-weight: bold; }
+    input, select, textarea {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin-top: 7px;
+      border: 1px solid #d9d4e5;
+      border-radius: 9px;
+      background: white;
+      font: inherit;
+    }
+
+    .result {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #f1effb;
+      color: #41356f;
+      display: none;
+    }
+
+    .result.show { display: block; }
+
+    .footer {
+      text-align: center;
+      padding: 25px 15px 35px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 650px) {
+      .topbar { padding: 15px 5%; }
+      .actions { grid-template-columns: 1fr; }
+      main { margin-top: 25px; padding: 0 14px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="logo">◉</div>
+    <div>
+      <div class="brand">VONICA</div>
+      <div class="tagline">PODCAST · NGHE · KHÁM PHÁ · CHIA SẺ GIÁ TRỊ</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <span class="eyebrow">PHÒNG THỰC HÀNH TƯƠNG TÁC</span>
+      <h1>Cài đặt, thử nghiệm &amp; triển khai VONICA</h1>
+      <p class="intro">
+        Nền tảng podcast giả định: tìm kiếm, nghe và đăng tải chương trình
+        âm thanh. Thực hành trực tiếp, nhận phản hồi tức thời, không chấm
+        điểm và không cần Internet sau khi trang đã được tải.
+      </p>
+
+      <div class="actions">
+        <button class="btn primary" onclick="showPanel('test')">
+          A · Cài đặt &amp; thử nghiệm →
+        </button>
+        <button class="btn" onclick="showPanel('deploy')">
+          B · Triển khai hệ thống →
+        </button>
+      </div>
+      <button class="reset" onclick="resetLab()">↻ Làm lại</button>
+    </section>
+
+    <section class="panel" id="test">
+      <h2>A · Cài đặt &amp; thử nghiệm</h2>
+      <p>Thử nghiệm các chức năng cơ bản của hệ thống podcast VONICA.</p>
+
+      <label class="field">
+        Tìm kiếm chương trình podcast
+        <input id="keyword" placeholder="Ví dụ: học tập, kinh doanh, cuộc sống">
+      </label>
+
+      <label class="field">
+        Chức năng muốn thử nghiệm
+        <select id="feature">
+          <option value="search">Tìm kiếm podcast</option>
+          <option value="listen">Nghe podcast</option>
+          <option value="upload">Đăng tải chương trình âm thanh</option>
+          <option value="room">Phòng thảo luận sau khi nghe</option>
+        </select>
+      </label>
+
+      <button class="btn primary" onclick="runTest()">Chạy thử nghiệm</button>
+      <div class="result" id="testResult" aria-live="polite"></div>
+    </section>
+
+    <section class="panel" id="deploy">
+      <h2>B · Triển khai hệ thống</h2>
+      <p>Ghi nhận các thành phần cần chuẩn bị khi triển khai hệ thống VONICA.</p>
+
+      <label class="field">
+        Thành phần hệ thống
+        <select id="component">
+          <option>Giao diện người dùng</option>
+          <option>Cơ sở dữ liệu podcast</option>
+          <option>Quản lý tài khoản người dùng</option>
+          <option>Máy chủ lưu trữ âm thanh</option>
+          <option>Thanh toán và gói dịch vụ</option>
+          <option>Phòng thảo luận trực tuyến</option>
+        </select>
+      </label>
+
+      <label class="field">
+        Ghi chú triển khai
+        <textarea id="notes" rows="3" placeholder="Nhập nội dung cần lưu ý..."></textarea>
+      </label>
+
+      <button class="btn primary" onclick="runDeploy()">Kiểm tra thông tin</button>
+      <div class="result" id="deployResult" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Phiên bản 1.1 · VONICA là tình huống giả định phục vụ học phần
+    Phát triển hệ thống thương mại điện tử.<br>
+    Bản mô phỏng lưu trạng thái trong phiên trình duyệt.
+  </footer>
+
+  <script>
+    function showPanel(id) {
+      document.querySelectorAll('.panel').forEach(function(panel) {
+        panel.classList.remove('active');
+      });
+      document.getElementById(id).classList.add('active');
+      document.getElementById(id).scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+
+    function runTest() {
+      const keyword = document.getElementById('keyword').value.trim();
+      const feature = document.getElementById('feature').value;
+      const names = {
+        search: 'Tìm kiếm podcast',
+        listen: 'Nghe podcast',
+        upload: 'Đăng tải chương trình âm thanh',
+        room: 'Phòng thảo luận sau khi nghe'
+      };
+      const result = document.getElementById('testResult');
+      result.textContent = 'Đã ghi nhận yêu cầu thử nghiệm: ' +
+        names[feature] + '. Từ khóa: ' + (keyword || 'Chưa nhập') +
+        '. Đây là kết quả mô phỏng giao diện, chưa kết nối cơ sở dữ liệu.';
+      result.classList.add('show');
+    }
+
+    function runDeploy() {
+      const component = document.getElementById('component').value;
+      const notes = document.getElementById('notes').value.trim();
+      const result = document.getElementById('deployResult');
+      result.textContent = 'Đã chọn thành phần: ' + component +
+        '. Ghi chú: ' + (notes || 'Chưa có ghi chú') +
+        '. Đây là bản mô phỏng, chưa triển khai máy chủ thực tế.';
+      result.classList.add('show');
+    }
+
+    function resetLab() {
+      document.getElementById('keyword').value = '';
+      document.getElementById('feature').selectedIndex = 0;
+      document.getElementById('component').selectedIndex = 0;
+      document.getElementById('notes').value = '';
+
+      document.querySelectorAll('.panel').forEach(function(panel) {
+        panel.classList.remove('active');
+      });
+      document.querySelectorAll('.result').forEach(function(result) {
+        result.classList.remove('show');
+        result.textContent = '';
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
